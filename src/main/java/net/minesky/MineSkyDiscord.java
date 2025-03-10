@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.minesky.discord.events.DiscordCommands;
@@ -86,6 +87,9 @@ public class MineSkyDiscord extends JavaPlugin {
         CommandRegistering.DISCORD_COMMANDS.add(new SimpleCommand("desvincular", "Desvincular sua conta do Minecraft"));
         CommandRegistering.DISCORD_COMMANDS.add(new SimpleCommand("vincular", "Vincular sua conta com a do Minecraft"));
         CommandRegistering.DISCORD_COMMANDS.add(new SimpleCommand("lançou", "O MineSky lançou?"));
+
+        CommandRegistering.DISCORD_COMMANDS.add(new SimpleCommand("ligar", "Ligar servidor de eventos"));
+        CommandRegistering.DISCORD_COMMANDS.add(new SimpleCommand("desligar", "Desligar servidor de eventos"));
 
         l = this.getLogger();
         instance = this;

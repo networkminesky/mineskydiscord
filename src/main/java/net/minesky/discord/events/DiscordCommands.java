@@ -25,6 +25,7 @@ import net.minesky.core.databridge.MineSkyDB;
 import net.minesky.core.databridge.callbacks.ErrorType;
 import net.minesky.core.databridge.callbacks.SetOneCallback;
 import net.minesky.spigot.commands.Vincular;
+import net.minesky.utils.EventManagement;
 import net.minesky.utils.PIXUtils;
 import org.bson.Document;
 import org.bukkit.Bukkit;
@@ -161,9 +162,31 @@ public class DiscordCommands extends ListenerAdapter {
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         String cmd = event.getName().toLowerCase();
         InteractionHook hook = event.getHook();
-        Member member = event.getInteraction().getMember();
+        final Member member = event.getInteraction().getMember();
 
         switch (cmd) {
+            case "ligar": {
+                event.deferReply(true).queue();
+
+                if (!EventManagement.hasPermission(member)) {
+                    event.reply("❌ Você não tem permissão para usar este comando!").setEphemeral(true).queue();
+                    return;
+                }
+
+                EventManagement.toggleServerState(event, "start", "🔵 Ligando o servidor...", "✅ Servidor ligado com sucesso!");
+                break;
+            }
+            case "desligar": {
+                event.deferReply(true).queue();
+
+                if (!EventManagement.hasPermission(member)) {
+                    event.reply("❌ Você não tem permissão para usar este comando!").setEphemeral(true).queue();
+                    return;
+                }
+
+                EventManagement.toggleServerState(event, "stop", "🔴 Desligando o servidor...", "✅ Servidor desligado com sucesso!");
+                break;
+            }
             case "versão":
             case "ip": {
                 event.deferReply().queue();

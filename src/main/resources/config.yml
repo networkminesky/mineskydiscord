@@ -12,3 +12,9 @@ auto-pix:
   chave-pix: ""
   name: ""
   city: ""
+
+event-management:
+  pebble-api-key: ""
+  allowed-roles:
+    - "921956810812952657"
+  pebble-server-id: "e7412854"
