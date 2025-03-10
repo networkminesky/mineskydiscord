@@ -1,0 +1,13 @@
+name: MineSkyDiscord
+version: 1.0.1-RELEASE
+author: Drawn
+main: net.minesky.MineSkyDiscord
+softdepend:
+  - LiteBans
+  - mainframe
+  - PlaceholderAPI
+commands:
+  desvincular:
+    description: "Desvincula sua conta do discord com a do Minecraft"
+  vincular:
+    description: "Vincula sua conta do discrd com a do Minecraft"
