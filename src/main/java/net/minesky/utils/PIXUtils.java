@@ -25,19 +25,17 @@ public class PIXUtils {
     public static HashMap<String, String> pixCodes = new HashMap<>();
 
     private static String gerarPix(String valor) {
-        // Formata o valor para sempre ter duas casas decimais
         valor = String.format("%.2f", Double.parseDouble(valor)).replace(',', '.');
 
-        // Monta o payload do Pix
-        String pixSemCRC = "000201" +  // Payload Format Indicator
+        String pixSemCRC = "000201" +
                 "01021126580014br.gov.bcb.pix01" + String.format("%02d", chavePix.length()) + chavePix + // Chave Pix
                 "52040000" + // Merchant Category Code
-                "5303986" +  // Moeda BRL (986)
-                "54" + String.format("%02d", valor.length()) + valor + // Valor da transação
-                "5802BR" +  // Código do país
-                "59" + String.format("%02d", nomePessoa.length()) + nomePessoa + // Nome do recebedor
-                "60" + String.format("%02d", cidadePessoa.length()) + cidadePessoa + // Cidade do recebedor
-                "62070503***"; // Campo adicional opcional
+                "5303986" +  // BRL (986)
+                "54" + String.format("%02d", valor.length()) + valor + // Valor
+                "5802BR" +  // BR
+                "59" + String.format("%02d", nomePessoa.length()) + nomePessoa +
+                "60" + String.format("%02d", cidadePessoa.length()) + cidadePessoa +
+                "62070503***";
 
         // Calcula o CRC16
         String crc16 = calcularCRC16(pixSemCRC + "6304");
@@ -58,11 +56,11 @@ public class PIXUtils {
                 } else {
                     crc <<= 1;
                 }
-                crc &= 0xFFFF; // Mantém apenas os 16 bits inferiores
+                crc &= 0xFFFF;
             }
         }
 
-        return String.format("%04X", crc); // Retorna em maiúsculas com 4 caracteres
+        return String.format("%04X", crc);
     }
 
     public static CompletableFuture<File> gerarQRCodeAsync(String pix, int tamanho) {
