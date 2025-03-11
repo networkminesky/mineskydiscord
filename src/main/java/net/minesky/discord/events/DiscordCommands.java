@@ -166,7 +166,7 @@ public class DiscordCommands extends ListenerAdapter {
 
         switch (cmd) {
             case "ligar": {
-                event.deferReply(true).queue();
+                event.deferReply().queue();
 
                 if (!EventManagement.hasPermission(member)) {
                     event.reply("❌ Você não tem permissão para usar este comando!").setEphemeral(true).queue();
@@ -177,7 +177,7 @@ public class DiscordCommands extends ListenerAdapter {
                 break;
             }
             case "desligar": {
-                event.deferReply(true).queue();
+                event.deferReply().queue();
 
                 if (!EventManagement.hasPermission(member)) {
                     event.reply("❌ Você não tem permissão para usar este comando!").setEphemeral(true).queue();

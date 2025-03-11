@@ -1,4 +1,4 @@
-package net.minesky.spigot.events;
+package net.minesky.hooks;
 
 import litebans.api.*;
 import litebans.api.Events;
@@ -13,7 +13,7 @@ import org.bukkit.OfflinePlayer;
 import java.awt.*;
 import java.util.UUID;
 
-public class PunishEvents {
+public class LitebansHook {
 
     public static void registerEvents() {
         litebans.api.Events.get().register(new Events.Listener() {

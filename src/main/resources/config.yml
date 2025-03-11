@@ -7,6 +7,9 @@ bot-status: "ONLINE"
 # Time in seconds between each bot activity
 activity-change-interval: 20
 
+luckperms:
+  log-channel: "1349072590437879912"
+
 # Config for the auto PIX code generator
 auto-pix:
   chave-pix: ""

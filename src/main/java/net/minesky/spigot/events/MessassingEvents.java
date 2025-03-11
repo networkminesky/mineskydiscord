@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.minesky.MineSkyDiscord;
+import net.minesky.hooks.LitebansHook;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -82,7 +83,7 @@ public class MessassingEvents implements PluginMessageListener {
 
                 MineSkyDiscord.l.info("[Debug] Recebido punição do Velocity! Enviando embeds...");
 
-                PunishEvents.createEmbed(punishType, playerInfo, staffer, reason, duration, server, Boolean.parseBoolean(silent));
+                LitebansHook.createEmbed(punishType, playerInfo, staffer, reason, duration, server, Boolean.parseBoolean(silent));
             }
         }
     }

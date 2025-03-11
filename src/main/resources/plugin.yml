@@ -6,6 +6,7 @@ softdepend:
   - LiteBans
   - mainframe
   - PlaceholderAPI
+  - LuckPerms
 commands:
   desvincular:
     description: "Desvincula sua conta do discord com a do Minecraft"

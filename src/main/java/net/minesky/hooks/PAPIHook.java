@@ -1,4 +1,4 @@
-package net.minesky.utils.hooks;
+package net.minesky.hooks;
 
 import com.google.common.base.CharMatcher;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -8,7 +8,7 @@ import net.minesky.discord.LegacyEvents;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.OfflinePlayer;
 
-public class PlaceholderAPI extends PlaceholderExpansion {
+public class PAPIHook extends PlaceholderExpansion {
 
     @Override
     public String getAuthor() {

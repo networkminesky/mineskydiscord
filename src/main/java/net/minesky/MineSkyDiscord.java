@@ -4,18 +4,19 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.minesky.discord.events.DiscordCommands;
 import net.minesky.discord.events.DiscordMisc;
 import net.minesky.discord.events.DiscordVoice;
 import net.minesky.discord.registering.CommandRegistering;
+import net.minesky.hooks.LitebansHook;
+import net.minesky.hooks.LuckpermsHook;
 import net.minesky.spigot.commands.Desvincular;
 import net.minesky.spigot.commands.Vincular;
 import net.minesky.spigot.events.MessassingEvents;
 import net.minesky.spigot.events.SpigotPlayerEvents;
-import net.minesky.utils.hooks.PlaceholderAPI;
+import net.minesky.hooks.PAPIHook;
 import net.minesky.utils.SimpleCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -127,8 +128,20 @@ public class MineSkyDiscord extends JavaPlugin {
         this.getCommand("vincular").setExecutor(new Vincular());
         this.getCommand("desvincular").setExecutor(new Desvincular());
 
-        l.info("§6[SPIGOT] Registrando placeholders do serviço: PlaceholderAPI");
-        new PlaceholderAPI().register();
+        if(getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            l.info("§6[SPIGOT] Registrando placeholders do serviço: PlaceholderAPI");
+            new PAPIHook().register();
+        }
+
+        if(getServer().getPluginManager().isPluginEnabled("LiteBans")) {
+            l.info("§6[SPIGOT] Registrando eventos do LiteBans");
+            LitebansHook.registerEvents();
+        }
+
+        if(getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
+            l.info("§6[SPIGOT] Registrando eventos do Luckperms");
+            LuckpermsHook.setup();
+        }
 
         getServer().getPluginManager().registerEvents(new SpigotPlayerEvents(), this);
 
