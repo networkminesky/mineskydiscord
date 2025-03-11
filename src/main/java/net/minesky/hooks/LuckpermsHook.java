@@ -16,11 +16,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.awt.*;
+import java.time.Instant;
 import java.util.function.Consumer;
 
 public class LuckpermsHook {
 
-    public static final String LOG_CHANNEL = MineSkyDiscord.config.getString("luckperms.log-channel", "---");
+    public static final long LOG_CHANNEL = MineSkyDiscord.config.getLong("luckperms.log-channel", 1348099159743397948L);
 
     public static LuckPerms luckpermsAPI;
 
@@ -44,11 +45,11 @@ public class LuckpermsHook {
             emb.setTitle("Novo registro do Luckperms");
             emb.setDescription("Uma nova modificação foi detectada nas permissões do servidor.");
 
-            emb.addField("\uD83D\uDC64 Origem (source)", entry.getSource().getName()+" - ``("+entry.getSource().getUniqueId()+")``", true);
+            emb.addField("\uD83D\uDC64 Origem (source)", entry.getSource().getName()+" - ``("+entry.getSource().getUniqueId()+")``", false);
 
-            emb.addField("\uD83C\uDFAF Alvo (target)", entry.getTarget().getType()+" - "+entry.getTarget().getName(), true);
+            emb.addField("\uD83C\uDFAF Alvo (target)", entry.getTarget().getType()+" - "+entry.getTarget().getName(), false);
 
-            emb.addField("\uD83D\uDD70", entry.getTimestamp().toString(), true);
+            emb.addField("\uD83D\uDD70 Horário (servidor)", "<t:"+Instant.now().getEpochSecond()+":f>", false);
 
             emb.addField("\uD83D\uDCDD Modificação", entry.getDescription(), false);
 

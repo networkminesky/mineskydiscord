@@ -8,7 +8,7 @@ bot-status: "ONLINE"
 activity-change-interval: 20
 
 luckperms:
-  log-channel: "1349072590437879912"
+  log-channel: 1348099159743397948
 
 # Config for the auto PIX code generator
 auto-pix:
