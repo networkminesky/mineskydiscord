@@ -1,4 +1,4 @@
-package net.minesky.utils;
+package net.minesky.spigot;
 
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;

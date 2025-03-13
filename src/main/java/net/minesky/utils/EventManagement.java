@@ -39,15 +39,15 @@ public final class EventManagement extends JavaPlugin {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                event.getChannel().sendMessage("❌ Erro ao alterar o estado do servidor: " + e.getMessage()).queue();
+                event.getHook().sendMessage("❌ Erro ao alterar o estado do servidor: " + e.getMessage()).queue();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    event.getChannel().sendMessage(mensagemSucesso).queue();
+                    event.getHook().sendMessage(mensagemSucesso).queue();
                 } else {
-                    event.getChannel().sendMessage("❌ Falha ao alterar o estado do servidor! Código: " + response.code()).queue();
+                    event.getHook().sendMessage("❌ Falha ao alterar o estado do servidor! Código: " + response.code()).queue();
                 }
             }
         });
