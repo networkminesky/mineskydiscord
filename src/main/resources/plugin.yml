@@ -1,0 +1,19 @@
+name: MineSkyDiscord
+version: '${version}'
+
+main: net.mineskydiscord.MineSkyDiscord
+api-version: '26.1'
+load: POSTWORLD
+authors: [ Bruno C. ]
+folia-supported: true
+
+libraries:
+  - "net.dv8tion:JDA:6.5.0"
+
+commands:
+  vincular:
+    description: Vincular a sua conta do discord com a sua conta do Minecraft.
+    usage: /vincular (código)
+  desvincular:
+    description: Desvincular da sua conta do discord.
+    usage: /desvincular

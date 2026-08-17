@@ -1,0 +1,21 @@
+# Discord bot token here
+token: ""
+
+# Random bot config
+bot-status: "ONLINE"
+
+# Time in seconds between each bot activity
+activity-change-interval: 20
+
+luckperms:
+  log-channel: 1348099159743397948
+litebans:
+  log-channel: 801963253219065882
+
+vip-roles:
+  guild-id: 672661692395814933
+  role-iron: 705951794907447366
+  role-gold: 705952419233660998
+  role-diamond: 736353716256505877
+  role-netherite: 816824166740262923
+  role-rubi: 1069740271010599074
