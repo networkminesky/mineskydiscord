@@ -52,7 +52,10 @@ public class DiscordMisc extends ListenerAdapter {
                             .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS)),
 
                     Commands.slash("nickname", "Altera seu apelido no discord")
-                            .addOption(OptionType.STRING, "nickname", "Insira seu novo Nickname", true)
+                            .addOption(OptionType.STRING, "nickname", "Insira seu novo Nickname", true),
+
+                    Commands.slash("anunciar", "Broadcast de mensagem")
+                            .addOption(OptionType.STRING, "broadcast", "Mensagem", true)
             );
 
             updateAction.queue();

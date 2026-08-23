@@ -7,11 +7,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -55,6 +51,75 @@ public class DiscordCommands extends ListenerAdapter {
                 hook.sendMessageEmbeds(eb.build()).queue();
                 break;
             }
+            case "anunciar": {
+                event.deferReply(true).queue();
+
+                if (!member.hasPermission(Permission.ADMINISTRATOR)) {
+                    event.getHook().sendMessage("❌ Você não tem permissão para usar este comando.").queue();
+                    return;
+                }
+
+                final String broadcast = event.getOption("broadcast").getAsString();
+                Guild guild = event.getGuild();
+
+                if (guild == null) {
+                    event.getHook().sendMessage("❌ Este comando só pode ser usado em servidores.").queue();
+                    return;
+                }
+
+                event.getHook().sendMessage("⏳ Carregando membros e iniciando o envio dos anúncios...").queue();
+
+                guild.loadMembers().onSuccess(members -> {
+                    List<Member> targetMembers = members.stream()
+                            .filter(m -> !m.getUser().isBot())
+                            .toList();
+
+                    int total = targetMembers.size();
+                    java.util.concurrent.atomic.AtomicInteger enviados = new java.util.concurrent.atomic.AtomicInteger(0);
+                    java.util.concurrent.atomic.AtomicInteger falhas = new java.util.concurrent.atomic.AtomicInteger(0);
+                    java.util.concurrent.atomic.AtomicInteger index = new java.util.concurrent.atomic.AtomicInteger(0);
+
+                    Bukkit.getAsyncScheduler().runAtFixedRate(MineSkyDiscord.getInstance(), (task) -> {
+                        int currentIndex = index.getAndIncrement();
+
+                        if (currentIndex >= total) {
+                            task.cancel();
+                            event.getHook().sendMessage(String.format(
+                                    "✅ Envio concluído!\n📬 Sucessos: %d\n❌ Falhas (DM fechada/bloqueado): %d",
+                                    enviados.get(), falhas.get()
+                            )).queue();
+                            return;
+                        }
+
+                        Member target = targetMembers.get(currentIndex);
+
+                        MessageEmbed embed = new EmbedBuilder()
+                                .setTitle("Olá, " + target.getEffectiveName())
+                                .setDescription(broadcast.replace("\\n", "\n"))
+                                .setThumbnail("https://minesky.com.br/logo-min.png")
+                                .setColor(new Color(0, 98, 255))
+                                .setFooter("MineSky SMP ・ minesky.com.br", "https://minesky.com.br/logo-min.png")
+                                .build();
+
+                        target.getUser().openPrivateChannel().queue(
+                                privateChannel -> {
+                                    privateChannel.sendMessageEmbeds(embed).queue(
+                                            success -> enviados.incrementAndGet(),
+                                            error -> falhas.incrementAndGet()
+                                    );
+                                },
+                                error -> falhas.incrementAndGet()
+                        );
+
+                    }, 1, (long)(1.5 * 1000), java.util.concurrent.TimeUnit.MILLISECONDS);
+
+                }).onError(error -> {
+                    event.getHook().sendMessage("❌ Ocorreu um erro ao carregar os membros: " + error.getMessage()).queue();
+                });
+
+                break;
+            }
+
             case "site": {
                 event.deferReply().queue();
                 EmbedBuilder eb = new EmbedBuilder()

@@ -106,7 +106,6 @@ public final class MineSkyDiscord extends JavaPlugin {
 
             Activity currentActivity = activities.get(currentIdx).get();
             this.jda.getPresence().setActivity(currentActivity);
-
         }, 20L, config.getLong("activity-change-interval") * 20L);
     }
 
