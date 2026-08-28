@@ -84,10 +84,6 @@ public class DiscordCommands extends ListenerAdapter {
 
                         if (currentIndex >= total) {
                             task.cancel();
-                            event.getHook().sendMessage(String.format(
-                                    "✅ Envio concluído!\n📬 Sucessos: %d\n❌ Falhas (DM fechada/bloqueado): %d",
-                                    enviados.get(), falhas.get()
-                            )).queue();
                             return;
                         }
 
@@ -96,7 +92,8 @@ public class DiscordCommands extends ListenerAdapter {
                         MessageEmbed embed = new EmbedBuilder()
                                 .setTitle("Olá, " + target.getEffectiveName())
                                 .setDescription(broadcast.replace("\\n", "\n"))
-                                .setThumbnail("https://minesky.com.br/logo-min.png")
+                                //.setThumbnail("https://minesky.com.br/logo-min.png")
+                                .setImage("https://minesky.com.br/images/bg2.png")
                                 .setColor(new Color(0, 98, 255))
                                 .setFooter("MineSky SMP ・ minesky.com.br", "https://minesky.com.br/logo-min.png")
                                 .build();
