@@ -8,9 +8,11 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.mineskydiscord.cache.DiscordCacheManager;
 import net.mineskydiscord.discord.events.DiscordCommands;
+import net.mineskydiscord.discord.events.DiscordMessage;
 import net.mineskydiscord.discord.events.DiscordMisc;
 import net.mineskydiscord.discord.events.DiscordVoice;
 import net.mineskydiscord.discord.registering.CommandRegistering;
+import net.mineskydiscord.hooks.LitebansHook;
 import net.mineskydiscord.hooks.LuckpermsHook;
 import net.mineskydiscord.hooks.PAPIHook;
 import net.mineskydiscord.hooks.VipDiscordRolesListener;
@@ -79,7 +81,7 @@ public final class MineSkyDiscord extends JavaPlugin {
 
         if (this.getServer().getPluginManager().isPluginEnabled("LiteBans")) {
             l.info("[FOLIA] Registrando eventos do LiteBans");
-            net.minesky.hooks.LitebansHook.registerEvents();
+            LitebansHook.registerEvents();
         }
 
         if (this.getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
@@ -120,7 +122,7 @@ public final class MineSkyDiscord extends JavaPlugin {
                         GatewayIntent.MESSAGE_CONTENT
                 )
                 .setBulkDeleteSplittingEnabled(false)
-                .addEventListeners(new DiscordMisc(), new DiscordCommands(), new DiscordVoice())
+                .addEventListeners(new DiscordMisc(), new DiscordCommands(), new DiscordVoice(), new DiscordMessage())
                 .setEnableShutdownHook(true)
                 .setStatus(OnlineStatus.ONLINE)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)

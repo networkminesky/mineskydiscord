@@ -1,4 +1,4 @@
-package net.minesky.hooks; // Certifique-se de que o pacote bate com o da sua estrutura
+package net.mineskydiscord.hooks;
 
 import java.awt.Color;
 import java.util.UUID;
@@ -8,7 +8,7 @@ import litebans.api.Events.Listener;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import net.mineskydiscord.MineSkyDiscord; // Certifique-se de usar o pacote correto da sua Main
+import net.mineskydiscord.MineSkyDiscord;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
