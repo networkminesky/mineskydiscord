@@ -14,7 +14,7 @@ import org.bson.Document;
 import org.bukkit.Bukkit;
 
 public class DiscordMessage extends ListenerAdapter {
-    private static final String STAFF_CHANNEL_ID = "712035639750819862";
+    private static final String STAFF_CHANNEL_ID = "1549229512754077737";
 
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
