@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageCreateAction;
 import net.dv8tion.jda.api.utils.FileUpload;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import net.mineskydiscord.MineSkyDiscord;
 import net.minesky.api.database.PlayerDatabase;
 import net.minesky.api.database.UpdatedData;
@@ -41,8 +42,8 @@ public class DiscordCommands extends ListenerAdapter {
                 event.deferReply().queue();
                 EmbedBuilder eb = new EmbedBuilder()
                         .setTitle("\ud83d\udd17 **IP do Servidor**")
-                        .addField(":desktop: Java Edition (Computadores)", "> **IP:** minesky.com.br\n> **Versão:** 26.1.2", false)
-                        .addField(":mobile_phone: Bedrock (Celular & Console)", "> **IP:** minesky.com.br\n> **Porta:** 19132", false)
+                        .addField(":desktop: Java Edition (Computadores)", "> **IP:** jogar.minesky.com.br\n> **Versão:** 26.1.2", false)
+                        .addField(":mobile_phone: Bedrock (Celular & Console)", "> **IP:** jogar.minesky.com.br\n> **Porta:** 19132", false)
                         .addField("Dúvidas de como entrar?", "Confira nossa seção na wiki [clicando aqui](https://wiki.minesky.com.br/tutorial/guias-rapidos/como-entrar-no-servidor)", false)
                         .setThumbnail("https://minesky.com.br/logo-min.png")
                         .setColor(new Color(0, 98, 255))
@@ -90,20 +91,23 @@ public class DiscordCommands extends ListenerAdapter {
                         Member target = targetMembers.get(currentIndex);
 
                         MessageEmbed embed = new EmbedBuilder()
-                                .setTitle("Olá, " + target.getEffectiveName())
+                                .setTitle("Olá, " + target.getEffectiveName()+"!")
                                 .setDescription(broadcast.replace("\\n", "\n"))
                                 //.setThumbnail("https://minesky.com.br/logo-min.png")
-                                .setImage("https://minesky.com.br/images/bg2.png")
+                                //.setImage("https://i.imgur.com/LTo0gvy.png")
                                 .setColor(new Color(0, 98, 255))
+                                .addField("Jogue agora, de graça!", ":video_game: **IP:** ``jogar.minesky.com.br``\nJava e Bedrock, Pirata e Original", false)
                                 .setFooter("MineSky SMP ・ minesky.com.br", "https://minesky.com.br/logo-min.png")
                                 .build();
 
                         target.getUser().openPrivateChannel().queue(
                                 privateChannel -> {
-                                    privateChannel.sendMessageEmbeds(embed).queue(
-                                            success -> enviados.incrementAndGet(),
+                                    privateChannel.sendMessage("https://www.youtube.com/watch?v=tMvqVUQXgk0")
+                                            .setEmbeds(embed)
+                                            .queue(
+                                                    success -> enviados.incrementAndGet(),
                                             error -> falhas.incrementAndGet()
-                                    );
+                                            );
                                 },
                                 error -> falhas.incrementAndGet()
                         );
