@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.minesky.core.databridge.MineSkyDB;
 import net.mineskydiscord.MineSkyDiscord;
@@ -44,13 +45,13 @@ public class DiscordMessage extends ListenerAdapter {
     }
 
     public static void sendDiscordToStaff(String authorName, String msg) {
-        Component discordTag = Component.text("§9[Discord] ")
-                .hoverEvent(HoverEvent.showText(Component.text("§7Mensagem enviada via Discord")));
+        Component discordTag = Component.text("[Discord] ", NamedTextColor.BLUE)
+                .hoverEvent(HoverEvent.showText(Component.text("Mensagem enviada via Discord", NamedTextColor.GRAY)));
 
-        Component p = Component.text("§4[s] ")
+        Component p = Component.text("[s] ", NamedTextColor.DARK_RED)
                 .append(discordTag)
-                .append(Component.text("§c" + authorName))
-                .append(Component.text("§8: "))
+                .append(Component.text(authorName, NamedTextColor.RED))
+                .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                 .append(Component.text(msg, TextColor.fromHexString("#ffa8a8")));
 
         Player carrier = Bukkit.getOnlinePlayers().stream().findFirst().orElse(null);
