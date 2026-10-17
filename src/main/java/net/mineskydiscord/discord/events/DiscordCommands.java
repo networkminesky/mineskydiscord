@@ -106,7 +106,7 @@ public class DiscordCommands extends ListenerAdapter {
                                             .setEmbeds(embed)
                                             .queue(
                                                     success -> enviados.incrementAndGet(),
-                                            error -> falhas.incrementAndGet()
+                                                    error -> falhas.incrementAndGet()
                                             );
                                 },
                                 error -> falhas.incrementAndGet()

@@ -64,6 +64,7 @@ public final class MineSkyDiscord extends JavaPlugin {
         CommandRegistering.DISCORD_COMMANDS.add(new SimpleCommand("vincular", "Vincular sua conta com a do Minecraft"));
 
         this.getServer().getPluginManager().registerEvents(new PlayerEvents(this), this);
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "minesky:proxy");
 
         try {
             l.info("[DISCORD] Criando instância do bot no JDA!");
