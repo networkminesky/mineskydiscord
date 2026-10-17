@@ -7,17 +7,13 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.minesky.api.messaging.Messaging;
 import net.minesky.core.databridge.MineSkyDB;
+import net.minesky.core.messaging.MessageType;
 import net.mineskydiscord.MineSkyDiscord;
 import net.mineskydiscord.cache.DiscordCacheManager;
 import org.bson.Document;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 
 public class DiscordMessage extends ListenerAdapter {
     private static final String STAFF_CHANNEL_ID = "1549229512754077737";
@@ -34,7 +30,7 @@ public class DiscordMessage extends ListenerAdapter {
         if (!e.getMessage().getAttachments().isEmpty()) {
             StringBuilder attachments = new StringBuilder();
             for (var att : e.getMessage().getAttachments()) {
-                attachments.append(" §8[").append(att.getFileName()).append("§8]");
+                attachments.append(" [").append(att.getFileName()).append("]");
             }
             content = content.isEmpty() ? attachments.toString().trim() : content + " " + attachments;
         }
@@ -54,23 +50,12 @@ public class DiscordMessage extends ListenerAdapter {
                 .append(Component.text(": ", NamedTextColor.DARK_GRAY))
                 .append(Component.text(msg, TextColor.fromHexString("#ffa8a8")));
 
-        Player carrier = Bukkit.getOnlinePlayers().stream().findFirst().orElse(null);
-        if (carrier == null) {
-            return;
-        }
+        String serializedComponent = GsonComponentSerializer.gson().serialize(p);
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(baos);
+        Document payload = new Document("component", serializedComponent)
+                .append("author", authorName);
 
-        try {
-            dos.writeUTF("Discord");
-            String serializedComponent = GsonComponentSerializer.gson().serialize(p);
-            dos.writeUTF(serializedComponent);
-
-            carrier.sendPluginMessage(MineSkyDiscord.getInstance(), "minesky:proxy", baos.toByteArray());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Messaging.publish("minesky:network", "discord-staff", MessageType.DOCUMENT, payload);
     }
 
     private String getAuthorName(MessageReceivedEvent e) {

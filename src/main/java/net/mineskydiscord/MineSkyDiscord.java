@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import net.minesky.api.messaging.Messaging;
 import net.mineskydiscord.cache.DiscordCacheManager;
 import net.mineskydiscord.discord.events.DiscordCommands;
 import net.mineskydiscord.discord.events.DiscordMessage;
@@ -64,7 +65,12 @@ public final class MineSkyDiscord extends JavaPlugin {
         CommandRegistering.DISCORD_COMMANDS.add(new SimpleCommand("vincular", "Vincular sua conta com a do Minecraft"));
 
         this.getServer().getPluginManager().registerEvents(new PlayerEvents(this), this);
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "minesky:proxy");
+
+        if (Messaging.hasObserver()) {
+            l.info("[MESSAGING] Mainframe Messaging ativo para comunicacao com o Proxy.");
+        } else {
+            l.warning("[MESSAGING] Mainframe Messaging desabilitado ou sem conexao ativa com o MongoDB!");
+        }
 
         try {
             l.info("[DISCORD] Criando instância do bot no JDA!");
@@ -135,8 +141,6 @@ public final class MineSkyDiscord extends JavaPlugin {
         if (this.jda != null) {
             this.jda.shutdown();
         }
-
-        this.getServer().getMessenger().unregisterIncomingPluginChannel(this);
     }
 
     public DiscordCacheManager getCache() {

@@ -2,7 +2,6 @@ package net.mineskydiscord.paper.commands;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
-import net.minesky.api.MineSkyPlayer;
 import net.minesky.api.database.PlayerDatabase;
 import net.minesky.api.database.UpdatedData;
 import net.minesky.core.databridge.callbacks.ErrorType;
@@ -18,24 +17,23 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class Desvincular implements CommandExecutor {
+
     @Override
     public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String lbl, @NotNull String @NotNull [] args) {
-        if (!(s instanceof Player)) {
+        if (!(s instanceof Player p)) {
+            s.sendMessage("Apenas jogadores podem executar este comando.");
             return true;
         }
-
-        Player p = (Player) s;
-        MineSkyPlayer msp = new MineSkyPlayer(p);
 
         String cachedStatus = MineSkyDiscord.getInstance().getCache().getCachedStatus(p.getUniqueId());
 
         if (cachedStatus == null) {
-            msp.sendErrorMessage("Seus dados de vínculo ainda estão sendo carregados. Por favor, aguarde alguns segundos.");
+            sendError(p, "Seus dados de vínculo ainda estão sendo carregados. Por favor, aguarde alguns segundos.");
             return true;
         }
 
         if (cachedStatus.isEmpty() || cachedStatus.equals("nv")) {
-            msp.sendErrorMessage("Você não tem sua conta vinculada, para vincular utilize: /vincular");
+            sendError(p, "Você não tem sua conta vinculada, para vincular utilize: /vincular");
             return true;
         }
 
@@ -43,13 +41,13 @@ public class Desvincular implements CommandExecutor {
             @Override
             public void onQueryDone(Document document) {
                 if (document == null) {
-                    msp.sendErrorMessage("Não foi possível carregar os seus dados.");
+                    sendError(p, "Não foi possível carregar os seus dados.");
                     return;
                 }
 
                 Document discordDocument = document.get("discord", Document.class);
                 if (discordDocument == null) {
-                    msp.sendErrorMessage("Você não tem sua conta vinculada, para vincular utilize: /vincular");
+                    sendError(p, "Você não tem sua conta vinculada, para vincular utilize: /vincular");
                     return;
                 }
 
@@ -88,27 +86,30 @@ public class Desvincular implements CommandExecutor {
                             @Override
                             public void onSetDone() {
                                 MineSkyDiscord.getInstance().getCache().updateCachedStatus(p.getUniqueId(), "nv");
-
                                 p.sendMessage(Utils.c("&aSua conta foi desvinculada com sucesso! Caso queira vincular novamente, utilize o comando /vincular"));
                             }
 
                             @Override
                             public void onSetError(ErrorType errorType) {
-                                msp.sendErrorMessage("Um erro ocorreu ao salvar os novos dados: " + String.valueOf(errorType));
+                                sendError(p, "Um erro ocorreu ao salvar os novos dados: " + errorType);
                             }
                         });
                     }
                 } else {
-                    msp.sendErrorMessage("Você não tem sua conta vinculada, para vincular utilize: /vincular");
+                    sendError(p, "Você não tem sua conta vinculada, para vincular utilize: /vincular");
                 }
             }
 
             @Override
             public void onQueryError(ErrorType errorType) {
-                msp.sendErrorMessage("Um erro ocorreu ao buscar seus dados: " + String.valueOf(errorType));
+                sendError(p, "Um erro ocorreu ao buscar seus dados: " + errorType);
             }
         });
 
         return true;
+    }
+
+    private void sendError(Player p, String message) {
+        p.sendMessage(Utils.c("&c" + message));
     }
 }

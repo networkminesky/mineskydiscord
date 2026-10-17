@@ -14,7 +14,7 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.12.3")
     compileOnly("net.luckperms:api:5.5")
     compileOnly("com.gitlab.ruany:LiteBansAPI:0.6.1")
-    compileOnly("com.github.networkminesky:mainframe:1.3.1-BETA")
+    compileOnly("com.github.networkminesky.mainframe:mainframe-api:578767c23e")
     implementation("net.dv8tion:JDA:6.5.0")
 }
 

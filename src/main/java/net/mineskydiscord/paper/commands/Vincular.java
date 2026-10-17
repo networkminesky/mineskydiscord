@@ -3,7 +3,6 @@ package net.mineskydiscord.paper.commands;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.luckperms.api.LuckPermsProvider;
-import net.minesky.api.MineSkyPlayer;
 import net.minesky.api.database.PlayerDatabase;
 import net.minesky.api.database.UpdatedData;
 import net.minesky.core.databridge.callbacks.ErrorType;
@@ -30,33 +29,31 @@ public class Vincular implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String lbl, @NotNull String @NotNull [] args) {
-        if (!(s instanceof Player)) {
+        if (!(s instanceof Player p)) {
+            s.sendMessage("Apenas jogadores podem executar este comando.");
             return true;
         }
-
-        final Player p = (Player) s;
-        final MineSkyPlayer msp = new MineSkyPlayer(p);
 
         String valor = plugin.getCache().getCachedStatus(p.getUniqueId());
 
         if (valor == null) {
-            msp.sendErrorMessage("Seus dados ainda estão sendo carregados. Por favor, aguarde alguns segundos e tente novamente.");
+            sendError(p, "Seus dados ainda estão sendo carregados. Por favor, aguarde alguns segundos e tente novamente.");
             return true;
         }
 
         if (valor.equals("v")) {
-            msp.sendErrorMessage("Sua conta já esta vinculada! Caso queira desvincular, utilize /desvincular aqui ou no Discord.");
+            sendError(p, "Sua conta já esta vinculada! Caso queira desvincular, utilize /desvincular aqui ou no Discord.");
             return true;
         }
 
         if (args.length == 0) {
-            msp.sendErrorMessage("Sua conta não está vinculada! Para vincular, entre em nosso Discord: https://minesky.com.br/discord e utilize o comando /vincular em algum canal.");
+            sendError(p, "Sua conta não está vinculada! Para vincular, entre em nosso Discord: https://minesky.com.br/discord e utilize o comando /vincular em algum canal.");
             return true;
         }
 
         String codigo = args[0];
         if (!Vincular.vinc.containsKey(codigo)) {
-            msp.sendErrorMessage("Este código não existe ou é inválido! Verifique corretamente o código que o Bot lhe enviou e coloque logo apos o comando '/vinculado'");
+            sendError(p, "Este código não existe ou é inválido! Verifique corretamente o código que o Bot lhe enviou e coloque logo apos o comando '/vinculado'");
             return true;
         }
 
@@ -86,7 +83,7 @@ public class Vincular implements CommandExecutor {
 
                             g.retrieveMemberById(dcid).queue(member -> {
                                 if (member.isBoosting()) {
-                                    Bukkit.getScheduler().runTask(plugin, () -> {
+                                    Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
                                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + p.getName() + " parent add booster");
                                     });
                                     p.sendMessage(Utils.c("\n&aObrigado por boostar nosso Discord! Sua Tag foi recebida e permanecerá conforme seu boost continua!\n "));
@@ -120,11 +117,15 @@ public class Vincular implements CommandExecutor {
 
                 @Override
                 public void onSetError(ErrorType errorType) {
-                    msp.sendErrorMessage("Um erro ocorreu ao setar: " + String.valueOf(errorType));
+                    sendError(p, "Um erro ocorreu ao setar: " + errorType);
                 }
             });
         });
 
         return true;
+    }
+
+    private void sendError(Player p, String message) {
+        p.sendMessage(Utils.c("&c" + message));
     }
 }
